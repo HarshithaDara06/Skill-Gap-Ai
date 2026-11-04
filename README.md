@@ -56,7 +56,7 @@ cd SkillGap-AI
 
 3. Install the required dependencies:
 
-pip install flask PyPDF2 spacy
+pip install -r requirements.txt
 
 4. Download the spaCy English language model:
 
