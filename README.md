@@ -1,4 +1,4 @@
-
+![SkillGap AI Banner](<SkillGap AI-Banner.jpeg>)
 
 SkillGap AI – Intelligent Resume Analyzer
 
