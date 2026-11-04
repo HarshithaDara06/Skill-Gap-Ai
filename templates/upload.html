@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Analysis | SkillGap AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="/" class="brand">✦ SkillGap AI</a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/upload" style="color:#2563eb;">Resume Analysis</a>
+        </div>
+    </nav>
+
+    <!-- UPLOAD PAGE -->
+    <main class="upload-page">
+
+        <div class="upload-container">
+
+            <div style="text-align:center; margin-bottom:30px;">
+
+                <span class="skill-tag">✦ AI-POWERED ANALYSIS</span>
+
+                <h1 style="margin-top:15px;">
+                    Analyze Your Resume
+                </h1>
+
+                <p class="muted">
+                    Upload your resume and discover your career potential.
+                </p>
+
+            </div>
+
+            <!-- FORM -->
+            <form action="/analyze" method="POST" enctype="multipart/form-data">
+
+                <!-- RESUME UPLOAD -->
+                <div class="form-group">
+
+                    <label>📄 Upload Your Resume</label>
+
+                    <div class="upload-box">
+
+                        <div style="font-size:40px;">📁</div>
+
+                        <h3>Choose your resume PDF</h3>
+
+                        <p class="muted">
+                            Upload a text-based PDF file (maximum 10 MB).
+                        </p>
+
+                        <input
+                            type="file"
+                            name="resume"
+                            id="resume"
+                            accept=".pdf,application/pdf"
+                            required
+                        >
+
+                        <p id="file-name" style="margin-top:12px; color:#2563eb;"></p>
+
+                    </div>
+
+                </div>
+
+                <!-- CAREER SELECTION -->
+                <div class="form-group">
+
+                    <label for="career">🎯 Select Your Target Career</label>
+
+                    <select
+                        class="form-control"
+                        name="career"
+                        id="career"
+                        required
+                    >
+
+                        <option value="">-- Select a Career --</option>
+
+                        {% for career in careers %}
+
+                            <option value="{{ career }}">
+                                {{ career }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- JOB DESCRIPTION -->
+                <div class="form-group">
+
+                    <label for="job_description">
+                        💼 Job Description
+                        <span class="muted">(Optional)</span>
+                    </label>
+
+                    <textarea
+                        class="form-control"
+                        name="job_description"
+                        id="job_description"
+                        placeholder="Paste the job description here to compare your resume with the job requirements..."
+                    ></textarea>
+
+                    <p class="muted" style="font-size:12px; margin-top:7px;">
+                        Adding a job description helps evaluate keyword alignment.
+                    </p>
+
+                </div>
+
+                <!-- SUBMIT -->
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-full"
+                    style="padding:16px;"
+                >
+                    ✨ Analyze My Resume
+                </button>
+
+                <p class="muted" style="text-align:center; font-size:12px; margin-top:18px;">
+                    Your resume is processed locally by this application.
+                </p>
+
+            </form>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>✦ SkillGap AI | Intelligent Resume Analysis & Career Guidance</p>
+    </footer>
+
+    <script>
+        const resumeInput = document.getElementById("resume");
+        const fileName = document.getElementById("file-name");
+
+        resumeInput.addEventListener("change", function () {
+
+            if (this.files.length > 0) {
+
+                const file = this.files[0];
+
+                fileName.textContent = "Selected: " + file.name;
+
+            } else {
+
+                fileName.textContent = "";
+
+            }
+
+        });
+    </script>
+
+</body>
+</html>

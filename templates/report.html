@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SkillGap AI - Resume Analysis Report</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 18mm 16mm;
+
+            @bottom-left {
+                content: "SkillGap AI | Resume Analysis";
+                color: #64748b;
+                font-size: 9px;
+            }
+
+            @bottom-right {
+                content: "Page " counter(page);
+                color: #64748b;
+                font-size: 9px;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #1e293b;
+            line-height: 1.6;
+            font-size: 11px;
+            margin: 0;
+        }
+
+        .cover {
+            min-height: 245mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            page-break-after: always;
+        }
+
+        .brand {
+            font-size: 34px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .cover h1 {
+            font-size: 30px;
+            margin: 10px 0;
+            color: #0f172a;
+        }
+
+        .cover .subtitle {
+            font-size: 15px;
+            color: #64748b;
+        }
+
+        .cover-line {
+            width: 100px;
+            height: 4px;
+            background: #2563eb;
+            margin: 28px auto;
+            border: none;
+        }
+
+        .cover-details {
+            margin-top: 35px;
+            padding: 22px;
+            background: #eff6ff;
+            border-radius: 12px;
+        }
+
+        .cover-details p {
+            margin: 8px;
+            font-size: 13px;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            color: #1d4ed8;
+            font-size: 19px;
+            border-bottom: 2px solid #dbeafe;
+            padding-bottom: 7px;
+            margin-bottom: 15px;
+        }
+
+        .intro {
+            color: #475569;
+            font-size: 12px;
+        }
+
+        .score-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .score-card {
+            width: 48%;
+            padding: 15px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 9px;
+        }
+
+        .score-label {
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+
+        .score-value {
+            font-size: 25px;
+            font-weight: bold;
+            color: #1d4ed8;
+            margin-top: 5px;
+        }
+
+        .info-card {
+            padding: 15px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            margin-bottom: 12px;
+        }
+
+        .info-card h3 {
+            margin-top: 0;
+            color: #0f172a;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 5px 9px;
+            border-radius: 5px;
+            margin: 3px;
+            font-size: 10px;
+        }
+
+        .missing {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .item {
+            padding: 12px;
+            border-left: 3px solid #2563eb;
+            background: #f8fafc;
+            margin: 10px 0;
+            page-break-inside: avoid;
+        }
+
+        .item h3,
+        .item h4 {
+            margin: 0 0 5px;
+            color: #1e293b;
+        }
+
+        .muted {
+            color: #64748b;
+        }
+
+        .priority {
+            font-weight: bold;
+            color: #1d4ed8;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #dbeafe;
+            color: #1e40af;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+            word-break: break-word;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            padding: 15px;
+            text-align: center;
+            background: #eff6ff;
+            border-radius: 8px;
+            color: #475569;
+        }
+
+        .new-page {
+            page-break-before: always;
+        }
+
+        .empty {
+            color: #64748b;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- COVER PAGE -->
+    <div class="cover">
+        <div class="brand">SkillGap AI</div>
+
+        <h1>Resume Analysis Report</h1>
+
+        <p class="subtitle">
+            AI-Powered Career Readiness & Skill Gap Analysis
+        </p>
+
+        <hr class="cover-line">
+
+        <div class="cover-details">
+            <p><strong>Selected Career:</strong> {{ career }}</p>
+            <p><strong>Readiness Level:</strong> {{ readiness_level }}</p>
+            <p><strong>Resume Strength:</strong> {{ resume_strength }}%</p>
+            <p><strong>Career Match:</strong> {{ career_match }}%</p>
+            <p><strong>ATS Score:</strong> {{ ats_score }}%</p>
+        </div>
+
+        <p class="muted" style="margin-top: 35px;">
+            Generated by SkillGap AI
+        </p>
+    </div>
+
+
+    <!-- CAREER OVERVIEW -->
+    <section class="section">
+        <h2 class="section-title">01. Career Overview</h2>
+
+        <div class="info-card">
+            <h3>Selected Career: {{ career }}</h3>
+
+            <p>
+                <span class="status">{{ readiness_level }}</span>
+            </p>
+
+            <p>{{ readiness_message }}</p>
+
+            <p>
+                This report evaluates the technical skills detected in
+                the uploaded resume and compares them with the requirements
+                of the selected career.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- PERFORMANCE SCORES -->
+    <section class="section">
+        <h2 class="section-title">02. Performance Summary</h2>
+
+        <div class="score-grid">
+            <div class="score-card">
+                <div class="score-label">Resume Strength</div>
+                <div class="score-value">{{ resume_strength }}%</div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-label">Career Match</div>
+                <div class="score-value">{{ career_match }}%</div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-label">ATS Score</div>
+                <div class="score-value">{{ ats_score }}%</div>
+            </div>
+
+            <div class="score-card">
+                <div class="score-label">Job Match</div>
+                <div class="score-value">
+                    {% if job_description %}
+                        {{ job_match }}%
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <p class="muted">
+            {% if job_description %}
+                Job Match is calculated using the supplied job description.
+            {% else %}
+                Job Match is not available because no job description was provided.
+            {% endif %}
+        </p>
+    </section>
+
+
+    <!-- SKILL ANALYSIS -->
+    <section class="section new-page">
+        <h2 class="section-title">03. Technical Skills Analysis</h2>
+
+        <div class="info-card">
+            <h3>Skills Found in Your Resume</h3>
+
+            {% for skill in found_skills %}
+                <span class="tag">{{ skill }}</span>
+            {% else %}
+                <p class="empty">No matching technical skills detected.</p>
+            {% endfor %}
+        </div>
+
+        <div class="info-card">
+            <h3>Skills to Develop</h3>
+
+            {% for skill in missing_skills %}
+                <span class="tag missing">{{ skill }}</span>
+            {% else %}
+                <p class="empty">
+                    No missing skills detected for the selected career.
+                </p>
+            {% endfor %}
+        </div>
+
+        <div class="info-card">
+            <h3>Skill Priority</h3>
+
+            {% for item in skill_priority %}
+                <div class="item">
+                    <strong>{{ item.skill }}</strong>
+                    <span class="priority">
+                        — {{ item.priority }} Priority
+                    </span>
+                </div>
+            {% else %}
+                <p class="empty">No additional priority skills.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+
+    <!-- CAREER RECOMMENDATIONS -->
+    <section class="section">
+        <h2 class="section-title">04. Career Recommendations</h2>
+
+        {% for item in career_recommendations %}
+            <div class="item">
+                <h3>{{ loop.index }}. {{ item.career }}</h3>
+                <h4>{{ item.score }}% Match</h4>
+                <p>{{ item.reason }}</p>
+            </div>
+        {% else %}
+            <p class="empty">No career recommendations available.</p>
+        {% endfor %}
+    </section>
+
+
+    <!-- LEARNING ROADMAP -->
+    <section class="section new-page">
+        <h2 class="section-title">05. Personalized Learning Roadmap</h2>
+
+        {% for step in learning_roadmap %}
+            <div class="item">
+                <h3>{{ loop.index }}. {{ step.skill }}</h3>
+                <p>{{ step.roadmap }}</p>
+            </div>
+        {% else %}
+            <p class="empty">No additional learning steps available.</p>
+        {% endfor %}
+    </section>
+
+
+    <!-- COURSE RECOMMENDATIONS -->
+    <section class="section">
+        <h2 class="section-title">06. Recommended Learning Resources</h2>
+
+        {% for course in course_recommendations %}
+            <div class="item">
+                <h3>{{ course.skill }}</h3>
+                <p>{{ course.course.name }}</p>
+                <p>
+                    <a href="{{ course.course.url }}">
+                        View Learning Resources
+                    </a>
+                </p>
+            </div>
+        {% else %}
+            <p class="empty">No course recommendations available.</p>
+        {% endfor %}
+    </section>
+
+
+    <!-- IMPROVEMENTS -->
+    <section class="section">
+        <h2 class="section-title">07. Resume Improvement Suggestions</h2>
+
+        {% for suggestion in improvement_suggestions %}
+            <div class="item">
+                <p>{{ loop.index }}. {{ suggestion }}</p>
+            </div>
+        {% else %}
+            <p class="empty">No additional suggestions available.</p>
+        {% endfor %}
+    </section>
+
+
+    <!-- FINAL NOTE -->
+    <div class="footer-note">
+        <h3>Keep Learning. Keep Building. Keep Growing.</h3>
+
+        <p>
+            Continue developing your technical skills, building practical
+            projects and updating your resume as you gain experience.
+        </p>
+
+        <strong>SkillGap AI — Your Career Readiness Companion</strong>
+    </div>
+
+</body>
+</html>

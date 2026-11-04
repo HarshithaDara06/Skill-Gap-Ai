@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillGap AI - Analysis Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="dashboard-body">
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <h2>SkillGap <span>AI</span></h2>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="sidebar-link active"
+               onclick="showSection('overview', this); return false;">
+                <span>📊</span> Overview
+            </a>
+
+            <a href="#" class="sidebar-link"
+               onclick="showSection('analysis', this); return false;">
+                <span>🤖</span> AI Analysis
+            </a>
+
+            <a href="#" class="sidebar-link"
+               onclick="showSection('skills', this); return false;">
+                <span>🎯</span> Skills & Gaps
+            </a>
+
+            <a href="#" class="sidebar-link"
+               onclick="showSection('careers', this); return false;">
+                <span>💼</span> Career Matches
+            </a>
+
+            <a href="#" class="sidebar-link"
+               onclick="showSection('learning', this); return false;">
+                <span>📚</span> Learning
+            </a>
+
+            <a href="#" class="sidebar-link"
+               onclick="showSection('improvements', this); return false;">
+                <span>🚀</span> Improvements
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="/upload" class="sidebar-link">
+                <span>⬆️</span> New Analysis
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+        <!-- PDF COVER PAGE -->
+<div class="pdf-cover">
+    <h1>SkillGap AI</h1>
+    <h2>Resume Analysis Report</h2>
+    <p>AI-Powered Career Readiness Analysis</p>
+    <hr>
+    <h3>Candidate Report</h3>
+    <p>Resume Strength: {{ resume_strength }}%</p>
+    <p>Career Match: {{ career_match }}%</p>
+    <p>ATS Score: {{ ats_score }}%</p>
+</div>
+
+        <header class="dashboard-header">
+            <div>
+                <p class="muted">Welcome to your dashboard</p>
+                <h1>Resume Analysis</h1>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a href="{{ url_for('download_report') }}" class="btn btn-primary">
+                📄 Download PDF Report
+            </a>
+
+            <a href="/" class="btn btn-outline">Home</a>
+</div>
+        </header>
+
+
+        <!-- OVERVIEW -->
+        <section id="overview" class="dashboard-section active">
+
+            <div class="section-heading">
+                <h2>Dashboard Overview</h2>
+                <p class="muted">Your resume performance at a glance.</p>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="card stat-card">
+                    <p class="muted">Resume Strength</p>
+                    <h2>{{ resume_strength }}%</h2>
+                    <p>Overall resume quality</p>
+                </div>
+
+                <div class="card stat-card">
+                    <p class="muted">Career Match</p>
+                    <h2>{{ career_match }}%</h2>
+                    <p>Selected career compatibility</p>
+                </div>
+
+                <div class="card stat-card">
+                    <p class="muted">ATS Score</p>
+                    <h2>{{ ats_score }}%</h2>
+                    <p>Estimated ATS compatibility</p>
+                </div>
+
+                <div class="card stat-card">
+                    <p class="muted">Job Match</p>
+                    <h2>{{ job_match }}%</h2>
+                    <p>Job description compatibility</p>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="card">
+                    <h3>Career Readiness</h3>
+                    <h2>{{ readiness_level }}</h2>
+                    <p class="muted">
+                        Your current readiness based on the detected skills.
+                    </p>
+
+                    <div class="progress-track">
+                        <div class="progress-fill"
+                             style="width: {{ career_match }}%;">
+                        </div>
+                    </div>
+
+                    <p>{{ career_match }}% career match</p>
+                </div>
+
+                <div class="card">
+                    <h3>Skill Coverage</h3>
+                    <h2>{{ found_skills|length }}</h2>
+                    <p class="muted">Skills detected in your resume.</p>
+
+                    <h3>{{ missing_skills|length }}</h3>
+                    <p class="muted">Skills you can improve.</p>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="card chart-card">
+                    <h3>Skills Overview</h3>
+                    <canvas id="skillsChart"></canvas>
+                </div>
+
+                <div class="card chart-card">
+                    <h3>Career Match</h3>
+                    <canvas id="careerChart"></canvas>
+                </div>
+
+                <div class="card chart-card">
+                    <h3>Resume Scores</h3>
+                    <canvas id="scoreChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- AI ANALYSIS -->
+        <section id="analysis" class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>AI Resume Analysis</h2>
+                <p class="muted">
+                    Understand what our system detected in your resume.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Analysis Summary</h3>
+
+                <p>
+                    Your resume was analyzed using skill extraction,
+                    text processing and career matching techniques.
+                    The system identified your existing skills and
+                    compared them with the selected career requirements.
+                </p>
+
+                <p><strong>Selected Career:</strong> {{ selected_career }}</p>
+                <p><strong>Readiness Level:</strong> {{ readiness_level }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Detected NLP Keywords</h3>
+
+                <div class="tag-container">
+                    {% for keyword in nlp_keywords %}
+                        <span class="skill-tag">{{ keyword }}</span>
+                    {% else %}
+                        <p class="muted">No additional keywords detected.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Skills Found in Your Resume</h3>
+
+                <div class="tag-container">
+                    {% for skill in found_skills %}
+                        <span class="skill-tag">{{ skill }}</span>
+                    {% else %}
+                        <p class="muted">No matching skills detected.</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Job Description Analysis</h3>
+
+                <p>
+                    Job Match Score:
+                    <strong>{{ job_match }}%</strong>
+                </p>
+
+                {% if job_description %}
+                    <p class="muted">
+                        Your resume was compared with the job description
+                        you provided.
+                    </p>
+                {% else %}
+                    <p class="muted">
+                        No job description was provided.
+                        You can upload your resume again with a job description
+                        for a more targeted comparison.
+                    </p>
+                {% endif %}
+            </div>
+
+        </section>
+
+
+        <!-- SKILLS AND GAPS -->
+        <section id="skills" class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>Skills & Gaps</h2>
+                <p class="muted">
+                    Identify your strengths and skills to develop.
+                </p>
+            </div>
+
+            <div class="dashboard-grid">
+
+                <div class="card">
+                    <h3>✅ Skills You Have</h3>
+
+                    <div class="tag-container">
+                        {% for skill in found_skills %}
+                            <span class="skill-tag">{{ skill }}</span>
+                        {% else %}
+                            <p class="muted">No skills found.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>❗ Skills You Need</h3>
+
+                    <div class="tag-container">
+                        {% for skill in missing_skills %}
+                            <span class="skill-tag missing-tag">
+                                {{ skill }}
+                            </span>
+                        {% else %}
+                            <p class="muted">
+                                Great! No missing required skills detected.
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="card">
+                <h3>Skill Priority</h3>
+
+                {% for skill in skill_priority %}
+                    <div class="priority-item">
+                        <span>{{ skill }}</span>
+                        <span class="muted">Recommended to learn</span>
+                    </div>
+                {% else %}
+                    <p class="muted">
+                        No additional priority skills available.
+                    </p>
+                {% endfor %}
+            </div>
+
+        </section>
+
+
+        <!-- CAREER MATCHES -->
+        <section id="careers" class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>Career Recommendations</h2>
+                <p class="muted">
+                    Career paths based on your resume skills.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Your Selected Career</h3>
+                <h2>{{ selected_career }}</h2>
+                <p>
+                    Match Score:
+                    <strong>{{ career_match }}%</strong>
+                </p>
+            </div>
+
+            <div class="career-grid">
+
+                {% for career in career_recommendations %}
+                    <div class="card career-card">
+
+                        <h3>{{ career.career }}</h3>
+
+                        <h2>{{ career.score }}%</h2>
+
+                        <div class="progress-track">
+                            <div class="progress-fill"
+                                 style="width: {{ career.score }}%;">
+                            </div>
+                        </div>
+
+                        <p class="muted">{{ career.reason }}</p>
+
+                    </div>
+                {% else %}
+                    <div class="card">
+                        <p>No career recommendations available.</p>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- LEARNING -->
+        <section id="learning" class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>Learning Roadmap</h2>
+                <p class="muted">
+                    Follow these steps to improve your skills.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Your Learning Roadmap</h3>
+
+                {% for step in roadmap %}
+                    <div class="roadmap-item">
+                        <div class="roadmap-number">
+                            {{ loop.index }}
+                        </div>
+
+                        <div>
+                            <h4>{{ step }}</h4>
+                            <p class="muted">
+                                Learn and practice this skill.
+                            </p>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="muted">No roadmap available.</p>
+                {% endfor %}
+            </div>
+
+
+            <div class="card">
+                <h3>Recommended Courses</h3>
+
+                {% for course in course_recommendations %}
+                    <div class="course-item">
+                        <div>
+                            <h4>{{ course.skill }}</h4>
+                            <p class="muted">{{ course.course }}</p>
+                        </div>
+
+                        <a href="https://www.youtube.com/results?search_query={{ (course.skill ~ ' tutorial for beginners') | urlencode }}"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="btn btn-primary">
+                             Watch YouTube Tutorials →
+                        </a>
+                    </div>
+                {% else %}
+                    <p class="muted">
+                        No course recommendations available.
+                    </p>
+                {% endfor %}
+            </div>
+
+        </section>
+
+
+        <!-- IMPROVEMENTS -->
+        <section id="improvements" class="dashboard-section">
+
+            <div class="section-heading">
+                <h2>Resume Improvements</h2>
+                <p class="muted">
+                    Practical suggestions to strengthen your profile.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <h3>Recommended Improvements</h3>
+
+                {% for suggestion in improvement_suggestions %}
+                    <div class="improvement-item">
+                        <span>💡</span>
+                        <p>{{ suggestion }}</p>
+                    </div>
+                {% else %}
+                    <p class="muted">
+                        Keep updating your resume with projects,
+                        skills and practical experience.
+                    </p>
+                {% endfor %}
+            </div>
+            <!-- RESUME CONTENT IMPROVEMENTS -->
+            <div class="card">
+                <h3>✨ AI Resume Content Improvements</h3>
+
+                <p class="muted">
+                    Suggestions to make your resume content more professional.
+                </p>
+
+                {% for item in resume_content_suggestions %}
+                    <div class="improvement-item">
+                        <span>📝</span>
+                        <div>
+                            <p>
+                                <strong>Detected phrase:</strong>
+                                {{ item.phrase }}
+                            </p>
+                            <p>
+                                <strong>Suggestion:</strong>
+                                {{ item.suggestion }}
+                            </p>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="muted">
+                        No content suggestions available.
+                    </p>
+                {% endfor %}
+            </div>
+
+
+            <div class="card">
+                <h3>Your Next Steps</h3>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-number">1</div>
+                    <div>
+                        <h4>Learn Missing Skills</h4>
+                        <p class="muted">
+                            Focus on the skills identified in your analysis.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-number">2</div>
+                    <div>
+                        <h4>Build Practical Projects</h4>
+                        <p class="muted">
+                            Apply your knowledge through real-world projects.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="roadmap-item">
+                    <div class="roadmap-number">3</div>
+                    <div>
+                        <h4>Update Your Resume</h4>
+                        <p class="muted">
+                            Add new skills, projects and achievements.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- PROJECT RECOMMENDATIONS -->
+            <div class="card">
+                <h3>🚀 Recommended Projects for You</h3>
+
+                <p class="muted">
+                Build these projects to improve the skills missing from your resume.
+                </p>
+
+                {% for project in project_recommendations %}
+                    <div class="roadmap-item">
+                    <div class="roadmap-number">{{ loop.index }}</div>
+
+                        <div>
+                        <h4>{{ project.name }}</h4>
+                        <p class="muted">{{ project.description }}</p>
+                        <p>
+                            <strong>Skill to improve:</strong>
+                    {{ project.skill }}
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                <p class="muted">
+            No project recommendations available.
+                </p>
+            {% endfor %}
+            </div>
+
+
+            <!-- FINAL IMPROVEMENT CARD -->
+            <div class="card" style="text-align:center;">
+
+                <h2>🌟 Ready to Improve Your Career Profile?</h2>
+
+                <p class="muted" style="margin-bottom:20px;">
+                    Keep updating your resume with new skills,
+                    completed projects and practical experience.
+                    Reanalyze your resume as you grow.
+                </p>
+
+                <a href="/upload" class="btn btn-primary">
+                    Analyze Another Resume →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+    // SIDEBAR NAVIGATION
+    function showSection(sectionId, clickedLink) {
+
+        document.querySelectorAll(".dashboard-section")
+            .forEach(section => {
+                section.classList.remove("active");
+            });
+
+        document.querySelectorAll(".sidebar-link")
+            .forEach(link => {
+                link.classList.remove("active");
+            });
+
+        const selectedSection = document.getElementById(sectionId);
+
+        if (selectedSection) {
+            selectedSection.classList.add("active");
+        }
+
+        if (clickedLink) {
+            clickedLink.classList.add("active");
+        }
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+
+    // CHART DATA FROM FLASK
+    const foundSkills = {{ found_skills|tojson }};
+    const missingSkills = {{ missing_skills|tojson }};
+    const careerNames = {{ career_names|tojson }};
+    const careerScores = {{ career_scores|tojson }};
+
+    const resumeStrength = {{ resume_strength|tojson }};
+    const careerMatch = {{ career_match|tojson }};
+    const atsScore = {{ ats_score|tojson }};
+    const jobMatch = {{ job_match|tojson }};
+
+
+    // CREATE CHARTS ONLY WHEN CHART.JS IS AVAILABLE
+    if (window.Chart) {
+
+        // SKILLS CHART
+        const skillsCanvas = document.getElementById("skillsChart");
+
+        if (skillsCanvas) {
+            new Chart(skillsCanvas, {
+                type: "doughnut",
+                data: {
+                    labels: ["Skills Found", "Skills Missing"],
+                    datasets: [{
+                        data: [
+                            foundSkills.length,
+                            missingSkills.length
+                        ],
+                        backgroundColor: ["#2563eb", "#f97316"],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+
+
+        // CAREER CHART
+        const careerCanvas = document.getElementById("careerChart");
+
+        if (careerCanvas) {
+            new Chart(careerCanvas, {
+                type: "bar",
+                data: {
+                    labels: careerNames,
+                    datasets: [{
+                        label: "Career Match %",
+                        data: careerScores,
+                        backgroundColor: "#2563eb",
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // RESUME SCORE CHART
+        const scoreCanvas = document.getElementById("scoreChart");
+
+        if (scoreCanvas) {
+            new Chart(scoreCanvas, {
+                type: "bar",
+                data: {
+                    labels: [
+                        "Resume Strength",
+                        "Career Match",
+                        "ATS Score",
+                        "Job Match"
+                    ],
+                    datasets: [{
+                        label: "Score %",
+                        data: [
+                            resumeStrength,
+                            careerMatch,
+                            atsScore,
+                            jobMatch
+                        ],
+                        backgroundColor: [
+                            "#2563eb",
+                            "#0d9488",
+                            "#8b5cf6",
+                            "#f97316"
+                        ],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+
+</script>
+<div style="text-align:center; margin:30px;">
+    <a href="{{ url_for('study_preferences') }}"
+       style="background:#2563eb; color:white; padding:14px 25px;
+              border-radius:8px; text-decoration:none; font-weight:bold;">
+        Create My Weekly Learning Schedule
+    </a>
+</div>
+
+</body>
+</html>

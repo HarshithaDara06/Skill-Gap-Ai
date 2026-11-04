@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Schedule | SkillGap AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 30px;
+            color: #24304a;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+        }
+
+        h1 {
+            color: #243b6b;
+        }
+
+        .task-card {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .day {
+            color: #3156a3;
+            font-weight: bold;
+        }
+
+        .duration {
+            color: #555;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .task-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 Your Weekly Learning Schedule</h1>
+
+    <p>Follow these tasks to improve your missing skills.</p>
+    {% set total_tasks = schedule|length %}
+{% set progress = namespace(completed=0) %}
+
+{% for task in schedule %}
+    {% if task["completed"] == 1 %}
+        {% set progress.completed = progress.completed + 1 %}
+    {% endif %}
+{% endfor %}
+
+{% set pending = total_tasks - progress.completed %}
+{% set percentage = ((progress.completed / total_tasks) * 100)|round|int if total_tasks > 0 else 0 %}
+<div style="
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin: 20px 0;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+">
+
+    <h2>📊 Your Learning Progress</h2>
+
+    <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+        <p><strong>Total Tasks:</strong> {{ total_tasks }}</p>
+        <p><strong>Completed:</strong> {{ progress.completed }}</p>
+        <p><strong>Pending:</strong> {{ pending }}</p>
+        <p><strong>Progress:</strong> {{ percentage }}%</p>
+    </div>
+
+    <div style="
+        width: 100%;
+        height: 14px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    ">
+        <div style="
+            width: {{ percentage }}%;
+            height: 100%;
+            background: #16a34a;
+            border-radius: 20px;
+        "></div>
+    </div>
+
+</div>
+
+    {% for task in schedule %}
+
+        <div class="task-card">
+
+            <div>
+                <p class="day">{{ task["study_day"] }}</p>
+                <h3>{{ task["skill"] }}</h3>
+                <p>{{ task["task"] }}</p>
+                <p class="duration">
+                    Study time: {{ task["duration"] }} hours
+                </p>
+            </div>
+
+            <div>
+                {% if task["completed"] == 1 %}
+                    <strong>✅ Completed</strong>
+                    {% else %}
+                        <strong>⏳ Pending</strong>
+
+                        <form 
+            action="{{ url_for('complete_learning_task') }}" method="POST">
+                    <input type="hidden" name="task_id" value="{{ task['id'] }}">
+                    <button type="submit" style="
+                    background: #2563eb;
+                    color: white;
+                    border: none;
+                    padding: 10px 16px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    margin-top: 10px;">
+                    Mark as Completed
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+            No learning tasks found. Please generate your schedule first.
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>
+

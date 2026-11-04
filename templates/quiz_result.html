@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Result | SkillGap AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 25px;
+            color: #24304a;
+        }
+
+        .result-card {
+            max-width: 550px;
+            margin: 60px auto;
+            padding: 35px;
+            background: white;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .score {
+            font-size: 42px;
+            font-weight: bold;
+            color: #2563eb;
+            margin: 20px 0;
+        }
+
+        .progress {
+            height: 14px;
+            background: #e5e7eb;
+            border-radius: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: {{ percentage }}%;
+            background: #16a34a;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="result-card">
+
+    <h1>🎉 Quiz Completed!</h1>
+
+    <h2>{{ skill }} Quiz Result</h2>
+
+    <div class="score">{{ score }} / {{ total_questions }}</div>
+
+    <h3>{{ percentage }}% Score</h3>
+
+    <div class="progress">
+        <div class="progress-fill"></div>
+    </div>
+
+    {% if percentage >= 70 %}
+        <h3>🌟 Excellent work!</h3>
+        <p>You have a good understanding of this skill.</p>
+    {% elif percentage >= 40 %}
+        <h3>👍 Good effort!</h3>
+        <p>Keep practising to improve your knowledge.</p>
+    {% else %}
+        <h3>📚 Keep Learning!</h3>
+        <p>Review the basics and try again.</p>
+    {% endif %}
+
+    <a href="{{ url_for('quiz_home') }}">Back to Quizzes</a>
+
+    <a href="{{ url_for('view_learning_schedule') }}">View Learning Progress</a>
+
+</div>
+
+</body>
+</html>

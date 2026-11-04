@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Quizzes | SkillGap AI</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 30px;
+            color: #24304a;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 30px auto;
+        }
+
+        h1 {
+            color: #243b6b;
+        }
+
+        .quiz-card {
+            background: white;
+            padding: 22px;
+            margin: 18px 0;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quiz-card a {
+            background: #2563eb;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            text-decoration: none;
+        }
+
+        .empty {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 15px;
+            }
+
+            .quiz-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🧠 Skill-Based Quizzes</h1>
+
+    <p>Test your knowledge of the skills you need to improve.</p>
+
+    {% for skill in available_quizzes %}
+
+        <div class="quiz-card">
+            <div>
+                <h3>{{ skill }}</h3>
+                <p>3 multiple-choice questions</p>
+            </div>
+
+            <a href="{{ url_for('start_quiz', skill=skill) }}">
+                Start Quiz
+            </a>
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+            <h3>No quizzes available yet.</h3>
+            <p>Analyze a resume with Python, SQL, or Machine Learning gaps to access the available quizzes.</p>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

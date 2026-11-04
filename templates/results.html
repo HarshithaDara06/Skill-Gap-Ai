@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SkillGap AI - Results</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+        }
+
+        h1 {
+            color: #1976d2;
+        }
+
+        h2 {
+            margin-top: 30px;
+        }
+
+        .skill {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background: #e3f2fd;
+            border-radius: 20px;
+        }
+
+        .missing {
+            background: #ffebee;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>SkillGap AI Analysis</h1>
+
+    <h2>Target Career</h2>
+    <p>{{ career }}</p>
+
+    <h2>✅ Skills You Have</h2>
+
+    {% for skill in found_skills %}
+        <span class="skill">{{ skill }}</span>
+    {% endfor %}
+
+    <h2>📚 Skills You Need to Learn</h2>
+
+    {% for skill in missing_skills %}
+        <span class="skill missing">{{ skill }}</span>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

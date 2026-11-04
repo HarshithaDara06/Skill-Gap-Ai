@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillGap AI | Career Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+        <a href="/" class="brand">✦ SkillGap AI</a>
+
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#about">About</a>
+            <a href="/upload" class="btn btn-primary">Get Started →</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <span class="skill-tag">✦ AI-Powered Career Intelligence</span>
+
+            <h1>
+                Discover Your Skills.
+                <span>Build Your Future.</span>
+            </h1>
+
+            <p>
+                Analyze your resume, discover your skill gaps,
+                explore suitable career opportunities and get
+                a personalized learning roadmap using AI.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/upload" class="btn btn-primary">
+                    Analyze My Resume →
+                </a>
+
+                <a href="#features" class="btn btn-outline">
+                    Explore Features
+                </a>
+            </div>
+
+            <p style="margin-top:25px; font-size:13px;">
+                AI-powered analysis · Career recommendations · Personalized learning
+            </p>
+
+        </div>
+
+        <div class="hero-visual">
+            <div class="card">
+
+                <h2>📊 Your Career Potential</h2>
+                <p class="muted">A smarter way to understand your career readiness.</p>
+
+                <div class="analytics-grid" style="grid-template-columns:repeat(2,1fr); margin-top:25px;">
+
+                    <div class="analytics-box">
+                        <h3>AI Analysis</h3>
+                        <div class="analytics-number">01</div>
+                    </div>
+
+                    <div class="analytics-box">
+                        <h3>Skill Mapping</h3>
+                        <div class="analytics-number">02</div>
+                    </div>
+
+                    <div class="analytics-box">
+                        <h3>Career Match</h3>
+                        <div class="analytics-number">03</div>
+                    </div>
+
+                    <div class="analytics-box">
+                        <h3>Learning Plan</h3>
+                        <div class="analytics-number">04</div>
+                    </div>
+
+                </div>
+
+                <div class="recommendation" style="margin-top:20px;">
+                    <h3>🚀 Your journey starts here</h3>
+                    <p>Turn your existing skills into future opportunities.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+
+        <div class="container">
+
+            <div style="text-align:center; margin-bottom:40px;">
+                <span class="skill-tag">WHAT WE OFFER</span>
+                <h2 class="page-heading" style="margin-top:15px;">
+                    Everything You Need to Grow
+                </h2>
+                <p class="page-subtitle">
+                    One platform to understand your skills and plan your career.
+                </p>
+            </div>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3>AI Resume Analysis</h3>
+                    <p class="muted">
+                        Extract technical skills and important keywords
+                        from your resume using NLP.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Career Matching</h3>
+                    <p class="muted">
+                        Compare your skills with different career
+                        requirements and discover suitable roles.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Skill Gap Detection</h3>
+                    <p class="muted">
+                        Identify the skills you already have and
+                        the skills you need to learn.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Career Readiness</h3>
+                    <p class="muted">
+                        Understand your career alignment through
+                        skill coverage and readiness indicators.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>Learning Roadmap</h3>
+                    <p class="muted">
+                        Follow a personalized roadmap to develop
+                        the skills required for your target career.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>ATS & Job Matching</h3>
+                    <p class="muted">
+                        Review keyword alignment with a job description
+                        and identify areas to improve.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- ABOUT -->
+    <section class="features" id="about" style="background:white;">
+
+        <div class="container" style="text-align:center;">
+
+            <span class="skill-tag">ABOUT SKILLGAP AI</span>
+
+            <h2 class="page-heading" style="margin-top:15px;">
+                Your Skills. Your Career. Your Future.
+            </h2>
+
+            <p class="page-subtitle" style="max-width:750px; margin:15px auto 30px;">
+                SkillGap AI is an AI-powered career intelligence platform
+                designed to analyze resumes, identify technical skill gaps
+                and recommend learning opportunities based on career goals.
+            </p>
+
+            <a href="/upload" class="btn btn-primary">
+                Start Your Career Analysis →
+            </a>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <h3>✦ SkillGap AI</h3>
+        <p>Intelligent Resume Analysis & Career Guidance</p>
+        <p style="margin-top:10px;">© 2026 SkillGap AI. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
